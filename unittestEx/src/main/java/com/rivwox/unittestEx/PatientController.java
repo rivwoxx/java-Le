@@ -37,23 +37,21 @@ public class PatientController {
 		return repo.save(patient);
 	}
 
-	@PutMapping
-	public PatientModel updatePatientRecord(@RequestBody PatientModel patient) throws NotFoundException {
-		if (patient == null || patient.getYear() == null) {
-			throw new InvalidRequestException("PatientRecord or ID must not be null!");
-		}
-		Optional<PatientModel> optionalRecord = repo.findById(patient.getYear());
-		if (optionalRecord.isEmpty()) {
-			throw new NotFoundException();
-		}
-		PatientModel existingPatientRecord = optionalRecord.get();
-
-		existingPatientRecord.setSong(patient.getSong());
-		existingPatientRecord.setArtist(patient.getArtist());
-		existingPatientRecord.setWinner_country(patient.getWinner_country());
-
-		return repo.save(existingPatientRecord);
-	}
+	/*
+	 * @PutMapping public PatientModel updatePatientRecord(@RequestBody PatientModel
+	 * patient) throws NotFoundException { if (patient == null || patient.getYear()
+	 * == null) { throw new
+	 * InvalidRequestException("PatientRecord or ID must not be null!"); }
+	 * Optional<PatientModel> optionalRecord = repo.findById(patient.getYear()); if
+	 * (optionalRecord.isEmpty()) { throw new NotFoundException(); } PatientModel
+	 * existingPatientRecord = optionalRecord.get();
+	 * 
+	 * existingPatientRecord.setSong(patient.getSong());
+	 * existingPatientRecord.setArtist(patient.getArtist());
+	 * existingPatientRecord.setWinner_country(patient.getWinner_country());
+	 * 
+	 * return repo.save(existingPatientRecord); }
+	 */
 
 	@DeleteMapping(value = "{patientID}")
 	public void deletePatientById(@PathVariable(value = "patient_id") Long patientId) throws NotFoundException {
