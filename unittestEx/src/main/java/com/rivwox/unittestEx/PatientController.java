@@ -14,25 +14,26 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "/patient")
+@RequestMapping(value = "/")
 public class PatientController {
 	@Autowired
 	PatientRecordRepository repo;
 
-	@GetMapping
+	@GetMapping(value = "patients")
 	public List<PatientModel> getAllRecords() {
 		return repo.findAll();
 	}
 
-	@GetMapping
-	public PatientModel getPatientById(@PathVariable(value = "id") Long id) {
+	@GetMapping(value = "patient")
+	public PatientModel getPatientById(@RequestParam Long id) {
 		return repo.findById(id).get();
 	}
 
-	@PostMapping
+	@PostMapping(value = "addpatient")
 	public PatientModel createRecord(@RequestBody @Valid PatientModel patient) {
 		return repo.save(patient);
 	}
@@ -53,8 +54,8 @@ public class PatientController {
 	 * return repo.save(existingPatientRecord); }
 	 */
 
-	@DeleteMapping(value = "{patientID}")
-	public void deletePatientById(@PathVariable(value = "patient_id") Long patientId) throws NotFoundException {
+	@DeleteMapping(value = "/deletePatient")
+	public void deletePatientById(@RequestParam Long patientId) throws NotFoundException {
 		if (repo.findById(patientId).isEmpty()) {
 			throw new NotFoundException();
 		}
