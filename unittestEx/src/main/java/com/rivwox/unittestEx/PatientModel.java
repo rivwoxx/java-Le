@@ -33,6 +33,13 @@ public class PatientModel {
 	@Column(name = "illness")
 	private String illness;
 
+	public PatientModel(Long id, String name, Long age, String illness) {
+		this.id = id;
+		this.name = name;
+		this.age = age;
+		this.illness = illness;
+	}
+
 	public Long getId() {
 		return id;
 	}
