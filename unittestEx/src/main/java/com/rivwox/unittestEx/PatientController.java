@@ -30,8 +30,8 @@ public class PatientController {
 		return repo.findAll();
 	}
 
-	@GetMapping(value = "patient")
-	public PatientModel getPatientById(@RequestParam Long id) {
+	@GetMapping(value = "patient") 
+	public PatientModel getPatientById(@RequestParam Long id){
 		return repo.findById(id).get();
 	}
 
@@ -43,7 +43,7 @@ public class PatientController {
 	@PutMapping(value = "/modpatient")
 	public PatientModel updatePatientRecord(@RequestBody PatientModel patient) throws NotFoundException {
 		if (patient == null || patient.getId() == null) {
-			throw new InvalidRequestException("PatientRecord or ID must not be null!");
+			throw new NotFoundException("PatientRecord or ID must not be null!");
 		}
 		Optional<PatientModel> optionalRecord = repo.findById(patient.getId());
 		if (optionalRecord.isEmpty()) {
@@ -61,7 +61,7 @@ public class PatientController {
 	@DeleteMapping(value = "/deletePatient")
 	public void deletePatientById(@RequestParam Long patientId) throws NotFoundException {
 		if (repo.findById(patientId).isEmpty()) {
-			throw new InvalidRequestException("PatientRecord or ID must not be null!");
+			throw new NotFoundException("PatientRecord or ID must not be null!");
 		}
 		repo.deleteById(patientId);
 	}

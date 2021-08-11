@@ -11,6 +11,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import org.springframework.test.web.servlet.request.MockMultipartHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -46,4 +48,35 @@ public class PatientControllerTest {
 	            .andExpect(jsonPath("$", hasSize(3)))
 	            .andExpect(jsonPath("$[2].name", is("Jane Doe")));
 	}
+	
+	
+	/*
+	 * @Test public void getPatientById_success() throws Exception {
+	 * Mockito.when(patientRecordRepository.findById(RECORD_1.getId())).thenReturn(
+	 * java.util.Optional.of(RECORD_1));
+	 * 
+	 * mockMvc.perform(MockMvcRequestBuilders .get("/patient?id=1")
+	 * .contentType(MediaType.APPLICATION_JSON)) .andExpect(status().isOk())
+	 * .andExpect(jsonPath("$", notNullValue())) .andExpect(jsonPath("$.name",
+	 * is("Rayven Yor"))); }
+	 */
+	
+	  @Test public void createRecord_success() throws Exception { PatientModel
+	  record = PatientModel.builder() 
+	  .name("John Doe") 
+	  .age(47L)
+	  .illness("Unknown") 
+	  .build();
+	  
+	  Mockito.when(patientRecordRepository.save(record)).thenReturn(record);
+	  
+	  MockHttpServletRequestBuilder mockRequest =
+	  MockMvcRequestBuilders.post("/addpatient")
+	  .contentType(MediaType.APPLICATION_JSON) .accept(MediaType.APPLICATION_JSON)
+	  .content(this.mapper.writeValueAsString(record));
+	  
+	  mockMvc.perform(mockRequest) .andExpect(status().isOk())
+	  .andExpect(jsonPath("$", notNullValue())) .andExpect(jsonPath("$.name",
+	  is("John Doe"))); }
+	 
 }

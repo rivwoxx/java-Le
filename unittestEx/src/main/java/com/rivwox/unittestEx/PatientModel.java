@@ -15,25 +15,30 @@ import lombok.Setter;
 @Entity
 @Table(name = "patient")
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
+
 @Builder
 public class PatientModel {
-	
+
 	@Id
 	@Column(name = "id")
 	private Long id;
-	
+
 	@Column(name = "fname")
 	private String name;
-	
+
 	@Column(name = "age")
 	private Long age;
-	
+
 	@Column(name = "illness")
 	private String illness;
 
+	
+	public PatientModel() {
+		
+	}
+	
 	public PatientModel(Long id, String name, Long age, String illness) {
+		
 		this.id = id;
 		this.name = name;
 		this.age = age;
@@ -72,5 +77,6 @@ public class PatientModel {
 		this.illness = illness;
 	}
 
-	
+
+
 }
