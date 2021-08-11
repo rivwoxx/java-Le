@@ -6,7 +6,7 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import javassist.NotFoundException;
 
 @RestController
 @RequestMapping(value = "/")
@@ -38,26 +40,28 @@ public class PatientController {
 		return repo.save(patient);
 	}
 
-	/*
-	 * @PutMapping public PatientModel updatePatientRecord(@RequestBody PatientModel
-	 * patient) throws NotFoundException { if (patient == null || patient.getYear()
-	 * == null) { throw new
-	 * InvalidRequestException("PatientRecord or ID must not be null!"); }
-	 * Optional<PatientModel> optionalRecord = repo.findById(patient.getYear()); if
-	 * (optionalRecord.isEmpty()) { throw new NotFoundException(); } PatientModel
-	 * existingPatientRecord = optionalRecord.get();
-	 * 
-	 * existingPatientRecord.setSong(patient.getSong());
-	 * existingPatientRecord.setArtist(patient.getArtist());
-	 * existingPatientRecord.setWinner_country(patient.getWinner_country());
-	 * 
-	 * return repo.save(existingPatientRecord); }
-	 */
+	@PutMapping(value = "/modpatient")
+	public PatientModel updatePatientRecord(@RequestBody PatientModel patient) throws NotFoundException {
+		if (patient == null || patient.getId() == null) {
+			throw new InvalidRequestException("PatientRecord or ID must not be null!");
+		}
+		Optional<PatientModel> optionalRecord = repo.findById(patient.getId());
+		if (optionalRecord.isEmpty()) {
+			throw new NotFoundException("Patient with ID " + patient.getId() + " does not exist.");
+		}
+		PatientModel existingPatientRecord = optionalRecord.get();
+
+		existingPatientRecord.setName(patient.getName());
+		existingPatientRecord.setAge(patient.getAge());
+		existingPatientRecord.setIllness(patient.getIllness());
+
+		return repo.save(existingPatientRecord);
+	}
 
 	@DeleteMapping(value = "/deletePatient")
 	public void deletePatientById(@RequestParam Long patientId) throws NotFoundException {
 		if (repo.findById(patientId).isEmpty()) {
-			throw new NotFoundException();
+			throw new InvalidRequestException("PatientRecord or ID must not be null!");
 		}
 		repo.deleteById(patientId);
 	}
