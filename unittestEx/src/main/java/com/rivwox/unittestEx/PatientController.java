@@ -40,7 +40,7 @@ public class PatientController {
 		return repo.save(patient);
 	}
 
-	@PutMapping(value = "/modpatient")
+	@PutMapping(value = "modpatient")
 	public PatientModel updatePatientRecord(@RequestBody PatientModel patient) throws NotFoundException {
 		if (patient == null || patient.getId() == null) {
 			throw new NotFoundException("PatientRecord or ID must not be null!");
