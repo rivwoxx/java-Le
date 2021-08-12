@@ -47,18 +47,14 @@ public class PatientControllerTest {
 				.andExpect(jsonPath("$[2].name", is("Jane Doe")));
 	}
 
-	
-	/*
-	 * @Test public void getPatientById_success() throws Exception {
-	 * Mockito.when(patientRecordRepository.findById(RECORD_1.getId())).thenReturn(
-	 * java.util.Optional.of(RECORD_1));
-	 * 
-	 * mockMvc.perform(MockMvcRequestBuilders .get("/patient?id=2")
-	 * .contentType(MediaType.APPLICATION_JSON)) .andExpect(status().isOk())
-	 * .andExpect(jsonPath("$", notNullValue())) .andExpect(jsonPath("$.name",
-	 * is("Rayven Yor"))); }
-	 */
-	 
+	@Test
+	public void getPatientById_success() throws Exception {
+		Mockito.when(patientRecordRepository.findById(RECORD_1.getId())).thenReturn(java.util.Optional.of(RECORD_1));
+
+		mockMvc.perform(MockMvcRequestBuilders.get("/patient?id=2").contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk()).andExpect(jsonPath("$", notNullValue()))
+				.andExpect(jsonPath("$.name", is("Rayven Yor")));
+	}
 
 	@Test
 	public void createRecord_success() throws Exception {
@@ -73,28 +69,21 @@ public class PatientControllerTest {
 		mockMvc.perform(mockRequest).andExpect(status().isOk()).andExpect(jsonPath("$", notNullValue()))
 				.andExpect(jsonPath("$.name", is("John Doe")));
 	}
-	
+
 	@Test
 	public void updatePatientRecord_success() throws Exception {
-	    PatientModel updatedRecord = PatientModel.builder()
-	            .id(2l)
-	            .name("Rayven Zambo")
-	            .age(23L)
-	            .illness("Coronavirus")
-	            .build();
+		PatientModel updatedRecord = PatientModel.builder().id(2l).name("Rayven Zambo").age(23L).illness("Coronavirus")
+				.build();
 
-	    Mockito.when(patientRecordRepository.findById(RECORD_1.getId())).thenReturn(Optional.of(RECORD_1));
-	    Mockito.when(patientRecordRepository.save(updatedRecord)).thenReturn(updatedRecord);
+		Mockito.when(patientRecordRepository.findById(RECORD_1.getId())).thenReturn(Optional.of(RECORD_1));
+		Mockito.when(patientRecordRepository.save(updatedRecord)).thenReturn(updatedRecord);
 
-	    MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.put("/modpatient")
-	            .contentType(MediaType.APPLICATION_JSON)
-	            .accept(MediaType.APPLICATION_JSON)
-	            .content(this.mapper.writeValueAsString(updatedRecord));
+		MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.put("/modpatient")
+				.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
+				.content(this.mapper.writeValueAsString(updatedRecord));
 
-	    mockMvc.perform(mockRequest)
-	            .andExpect(status().isOk())
-	            .andExpect(jsonPath("$", notNullValue()))
-	            .andExpect(jsonPath("$.name", is("Rayven Zambo")));
+		mockMvc.perform(mockRequest).andExpect(status().isOk()).andExpect(jsonPath("$", notNullValue()))
+				.andExpect(jsonPath("$.name", is("Rayven Zambo")));
 	}
 
 }
