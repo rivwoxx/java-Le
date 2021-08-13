@@ -43,7 +43,7 @@ public class PatientController {
 	@PutMapping(value = "modpatient")
 	public PatientModel updatePatientRecord(@RequestBody PatientModel patient) throws NotFoundException {
 		if (patient == null || patient.getId() == null) {
-			throw new NotFoundException("PatientRecord or ID must not be null!");
+			throw new InvalidRequestException("PatientRecord or ID must not be null!");
 		}
 		Optional<PatientModel> optionalRecord = repo.findById(patient.getId());
 		if (optionalRecord.isEmpty()) {
@@ -58,12 +58,12 @@ public class PatientController {
 		return repo.save(existingPatientRecord);
 	}
 
-	@DeleteMapping(value = "/deletePatient")
-	public void deletePatientById(@RequestParam Long patientId) throws NotFoundException {
-		if (repo.findById(patientId).isEmpty()) {
+	@DeleteMapping(value = "deletepatient")
+	public void deletePatientById(@RequestParam Long id) throws NotFoundException {
+		if (repo.findById(id).isEmpty()) {
 			throw new NotFoundException("PatientRecord or ID must not be null!");
 		}
-		repo.deleteById(patientId);
+		repo.deleteById(id);
 	}
 
 }
