@@ -60,10 +60,13 @@ public class PatientController {
 
 	@DeleteMapping(value = "deletepatient")
 	public void deletePatientById(@RequestParam Long id) throws NotFoundException {
-		if (repo.findById(id).isEmpty()) {
-			throw new NotFoundException("PatientRecord or ID must not be null!");
-		}
+//		if (repo.findById(id).isEmpty().) {
+//			throw new NotFoundException("Patient with ID " + id + " does not exist.");
+//		}
+		repo.findById(id).orElseThrow(() -> new NotFoundException("Patient with ID " + id + " does not exist."));
+		
 		repo.deleteById(id);
+		
 	}
 
 }

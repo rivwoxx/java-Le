@@ -3,7 +3,6 @@ package com.rivwox.unittestEx;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
@@ -110,29 +109,65 @@ public class PatientControllerTest {
 	 * PatientModel updatedRecord = PatientModel.builder() .id(5L)
 	 * .name("Sherlock Holmes") .age(40L) .illness("Flu") .build();
 	 * 
+	 * // PatientModel RECORD_5 = new PatientModel(5l, "Sherlock", 31l, "Unknown");
 	 * Mockito.when(patientRecordRepository.findById(updatedRecord.getId())).
-	 * thenReturn();
+	 * thenReturn(updatedRecord);
 	 * 
 	 * MockHttpServletRequestBuilder mockRequest =
 	 * MockMvcRequestBuilders.put("/modpatient")
 	 * .contentType(MediaType.APPLICATION_JSON) .accept(MediaType.APPLICATION_JSON)
 	 * .content(this.mapper.writeValueAsString(updatedRecord));
 	 * 
-	 * mockMvc.perform(mockRequest) .andExpect(status().isBadRequest())
+	 * mockMvc.perform(mockRequest).andExpect(status().isBadRequest())
 	 * .andExpect(result -> assertTrue(result.getResolvedException() instanceof
 	 * NotFoundException)) .andExpect(result ->
 	 * assertEquals("Patient with ID 5 does not exist.",
 	 * result.getResolvedException().getMessage())); }
 	 */
-	
+
+//	
+//	@Test
+//	public void updatePatientRecord_recordNotFound() throws Exception {
+//	    PatientModel updatedRecord = PatientModel.builder()
+//	            .id(5l)
+//	            .name("Sherlock Holmes")
+//	            .age(40L)
+//	            .illness("221B Baker Street")
+//	            .build();
+//
+//	    Mockito.when(patientRecordRepository.findById(updatedRecord.getId())).thenReturn(null);
+//
+//	    MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.put("/modpatient")
+//	            .contentType(MediaType.APPLICATION_JSON)
+//	            .accept(MediaType.APPLICATION_JSON)
+//	            .content(this.mapper.writeValueAsString(updatedRecord));
+//
+//	    mockMvc.perform(mockRequest)
+//	            .andExpect(status().isBadRequest())
+//	            .andExpect(result ->
+//	                assertTrue(result.getResolvedException() instanceof NotFoundException))
+//	    .andExpect(result ->
+//	        assertEquals("Patient with ID 5 does not exist.", result.getResolvedException().getMessage()));
+//	}
+
 	@Test
 	public void deletePatientById_success() throws Exception {
-	    Mockito.when(patientRecordRepository.findById(RECORD_2.getId())).thenReturn(Optional.of(RECORD_2));
+		Mockito.when(patientRecordRepository.findById(RECORD_2.getId())).thenReturn(Optional.of(RECORD_2));
 
-	    mockMvc.perform(MockMvcRequestBuilders
-	            .delete("/deletepatient?id=3")
-	            .contentType(MediaType.APPLICATION_JSON))
-	            .andExpect(status().isOk());
+		mockMvc.perform(MockMvcRequestBuilders.delete("/deletepatient?id=3").contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk());
+	}
+
+/*	@Test()
+	public void deletePatientById_notFound() throws Exception {
+		Mockito.when(patientRecordRepository.findById(5l)).thenReturn(Optional.empty());
+
+//		mockMvc.perform(MockMvcRequestBuilders.delete("/deletepatient?id=5").contentType(MediaType.APPLICATION_JSON))
+//				.andExpect(status().isBadRequest())
+//				.andExpect(result -> assertTrue(result.getResolvedException() instanceof NotFoundException))
+//				.andExpect(result -> assertEquals("Patient with ID 5 does not exist.",
+//						result.getResolvedException().getMessage()));
+		*/
 	}
 
 }
